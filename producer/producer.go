@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 
@@ -9,8 +10,16 @@ import (
 )
 
 func main() {
+
+	var pulsarUSL string
+	var topicName string
+
+	flag.StringVar(&pulsarUSL, "u", "", "")
+	flag.StringVar(&topicName, "t", "", "")
+	flag.Parse()
+
 	client, err := pulsar.NewClient(pulsar.ClientOptions{
-		URL: "pulsar://52.81.98.118:6655",
+		URL: pulsarUSL,
 	})
 
 	if err != nil {
@@ -20,7 +29,7 @@ func main() {
 	defer client.Close()
 
 	producer, err := client.CreateProducer(pulsar.ProducerOptions{
-		Topic: "ericsyh-topic",
+		Topic: topicName,
 	})
 	if err != nil {
 		log.Fatal(err)
