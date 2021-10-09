@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"time"
@@ -10,8 +11,17 @@ import (
 )
 
 func main() {
+	var pulsarUSL string
+	var topicName string
+	var subName string
+
+	flag.StringVar(&pulsarUSL, "u", "", "")
+	flag.StringVar(&topicName, "t", "", "")
+	flag.StringVar(&subName, "s", "", "")
+	flag.Parse()
+
 	client, err := pulsar.NewClient(pulsar.ClientOptions{
-		URL:               "pulsar://52.81.98.118:6655",
+		URL:               pulsarUSL,
 		OperationTimeout:  30 * time.Second,
 		ConnectionTimeout: 30 * time.Second,
 	})
@@ -22,8 +32,8 @@ func main() {
 	defer client.Close()
 
 	consumer, err := client.Subscribe(pulsar.ConsumerOptions{
-		Topic:                       "ericsyh-topic",
-		SubscriptionName:            "ericsyh-sub",
+		Topic:                       topicName,
+		SubscriptionName:            subName,
 		Type:                        pulsar.Failover,
 		SubscriptionInitialPosition: pulsar.SubscriptionPositionLatest,
 		ReplicateSubscriptionState:  true,
