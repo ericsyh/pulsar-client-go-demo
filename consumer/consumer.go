@@ -50,8 +50,8 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("Received message msgId: %#v -- content: '%s'\n",
-			msg.ID(), string(msg.Payload()))
+		fmt.Printf("Received message msgId: %#v -- content: '%s' -- property: '%s'\n",
+			msg.ID(), string(msg.Payload()), string(msg.Properties()["foo"]))
 
 		consumer.Ack(msg)
 	}
