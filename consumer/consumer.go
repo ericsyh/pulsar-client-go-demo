@@ -34,7 +34,7 @@ func main() {
 	consumer, err := client.Subscribe(pulsar.ConsumerOptions{
 		Topic:                       topicName,
 		SubscriptionName:            subName,
-		Type:                        pulsar.Failover,
+		Type:                        pulsar.Exclusive,
 		SubscriptionInitialPosition: pulsar.SubscriptionPositionLatest,
 		ReplicateSubscriptionState:  true,
 	})
@@ -50,10 +50,10 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("Received message msgId: %#v -- content: '%s' -- key: '%s' -- property: '%s'\n",
-			msg.ID(), string(msg.Payload()), string(msg.Key()), string(msg.Properties()["foo"]))
-
+		fmt.Printf("Received message msgId: %#v -- content: '%s'\n",
+			msg.ID(), string(msg.Payload()))
 		consumer.Ack(msg)
+		time.Sleep(time.Duration(3) * time.Second)
 	}
 	if err := consumer.Unsubscribe(); err != nil {
 		log.Fatal(err)

@@ -42,10 +42,6 @@ func main() {
 	for i := 0; i < 10000; i++ {
 		if msgId, err := producer.Send(ctx, &pulsar.ProducerMessage{
 			Payload: []byte(fmt.Sprintf("hello-%d", i)),
-			Key:     "message-key",
-			Properties: map[string]string{
-				"foo": "bar",
-			},
 		}); err != nil {
 			log.Fatal(err)
 		} else {
