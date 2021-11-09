@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/apache/pulsar-client-go/pulsar"
 )
@@ -40,6 +41,7 @@ func main() {
 	ctx := context.Background()
 
 	for i := 0; i < 2000; i++ {
+		time.Sleep(time.Duration(1) * time.Second)
 		if msgId, err := producer.Send(ctx, &pulsar.ProducerMessage{
 			Payload: []byte(fmt.Sprintf("hello-%d", i)),
 		}); err != nil {
